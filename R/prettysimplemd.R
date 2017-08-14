@@ -39,39 +39,71 @@ html {
 background: rgba(0,15,60,.125);
 background-image: url(\"/Users/mwk/r/linen8.png\");
 opacity: .9;
-padding: 30px 0;
+padding: 10px 0;
+color: #111;
 }
 body {
+background-image: url(\"/Users/mwk/Downloads/screen/MU_UnitSig_MissouriSchoolofJournalism_rgb_std_horiz.png\");
 border: 1px solid rgba(0,5,20,.35);
+background-size: 350px auto;
+background-repeat: no-repeat;
+background-position: right top;
 border-radius: 10px;
-max-width: 600px;
+max-width: 1000px;
+min-width: 400px;
+width: 90%;
 margin: 2px auto;
 line-height: 1.5;
-font-family: Roboto, sans-serif;
+font-family: 'GothamBook', sans-serif;
 font-weight: 400;
-color: #222;
-padding: 0 60px;
-background: #ffffff;
+padding: 10px;
+background-color: #fff;
 font-size: 16px;
 }
 p {
 padding: 2px 0;
-font-size: 17px;
+font-size: 16px;
 text-align: justify;
 line-height:
 1.4;
 }
-strong { font-weight: bold; }
-h1, h2, h3, h4 { font-weight: bold; }
-h2, h3, h4 { color: rgba(0,25,100,.85); }
+strong { font-family: 'GothamBold', sans-serif; }
+h1, h2, h3, h4 { font-family: 'GothamBold', sans-serif; }
+h2, h3, h4 { color: #000; }
 h1 {
+padding-top: 50px;
+font-size: 40px;
 text-align: center;
-color: rgba(150,25,25.85);
+color: #f1b82d;
 }
-h2 { font-size: 26px; }
-h3 { font-size: 24px; }
-h4 { font-size: 22px; }
-p.footer { padding: 30px 0; color: #666; font-size: 14px; text-align: center; }
+h2 { font-size: 22px; }
+h3 { font-size: 20px; }
+h4 { font-size: 18px; }
+p.footer {
+padding-top:80px;
+padding-bottom: 30px;
+color: #666;
+font-size: 14px;
+text-align: center; }
+s,
+strike {
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+}
+s:after,
+strike:after {
+  content: \"\";
+  position: absolute;
+  bottom: 0;
+  left: -2%;
+  border-radius:0 10px 10px 0;
+  border-top: 3px solid rgba(204, 0, 0, .75);
+  border-top-right-radius: 1px;
+  border-top-left-radius: 1px;
+  width: 104%;
+  height: 53%;
+}
 </style>
 "
 }
