@@ -156,11 +156,3 @@ renderPSM <- function(input, open = NULL, ...) {
   prettysimplemd(file = input, open = open, ...)
 }
 
-#' psm_document
-#' 
-#' @param ... Passed to rmarkdown::html_document
-#'
-#' @export
-psm_document <- function(...) {
-  renderPSM(...)
-}
