@@ -4,13 +4,18 @@
 \alias{prettysimplemd}
 \title{prettysimplemd}
 \usage{
-prettysimplemd(file, open = NULL, ...)
+prettysimplemd(file, description = NULL, date = NULL, open = NULL, ...)
 }
 \arguments{
 \item{file}{Name of markdown file.}
 
-\item{open}{Logical indicating whether to open output in browser. Defaults to open the
-first time the function is called in a session.}
+\item{description}{Optional, short hand description of document contents.}
+
+\item{date}{Date to be timestamped on top left of document. Defaults to 
+current year-month-day.}
+
+\item{open}{Logical indicating whether to open output in browser. Defaults to
+open the first time the function is called in a session.}
 
 \item{...}{Passed to rmarkdown::render.}
 }

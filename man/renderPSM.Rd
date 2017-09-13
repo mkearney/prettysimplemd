@@ -4,12 +4,18 @@
 \alias{renderPSM}
 \title{renderPSM}
 \usage{
-renderPSM(input, open = NULL, ...)
+renderPSM(input, description = NULL, date = NULL, open = NULL, ...)
 }
 \arguments{
 \item{input}{Name of file}
 
-\item{open}{Logical indicating whether to open html output in browser}
+\item{description}{Optional, short hand description of document contents.}
+
+\item{date}{Date to be timestamped on top left of document. Defaults to 
+current year-month-day.}
+
+\item{open}{Logical indicating whether to open output in browser. Defaults to
+open the first time the function is called in a session.}
 
 \item{...}{Passed to \code{\link{prettysimplemd}}}
 }

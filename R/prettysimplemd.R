@@ -3,12 +3,15 @@
 #' Generates pretty simple markdown files
 #'
 #' @param file Name of markdown file.
-#' @param open Logical indicating whether to open output in browser. Defaults to open the
-#'   first time the function is called in a session.
+#' @param description Optional, short hand description of document contents.
+#' @param date Date to be timestamped on top left of document. Defaults to 
+#'   current year-month-day.
+#' @param open Logical indicating whether to open output in browser. Defaults to
+#'   open the first time the function is called in a session.
 #' @param ... Passed to rmarkdown::render.
 #' @return Converts markdown file as pretty simple html file of same root name.
 #' @export
-prettysimplemd <- function(file, open = NULL, ...) {
+prettysimplemd <- function(file, description = NULL, date = NULL, open = NULL, ...) {
   file <- path.expand(file)
   con <- file(file)
   md <- readLines(con, warn = FALSE)
@@ -21,6 +24,9 @@ prettysimplemd <- function(file, open = NULL, ...) {
     ext <- ".Rmd"
   }
   tmp <- tempfile(fileext = ext)
+  md <- c(
+    meta_block(description = description, date = date), md
+  )
   cat(paste(md, collapse = "\n"), file = tmp, fill = TRUE)
   outfile <- gsub(paste0(ext, "$"), ".html", file)
   rmarkdown::render(
@@ -51,6 +57,36 @@ prettysimplemd <- function(file, open = NULL, ...) {
     browseURL(outfile)
   }
 }
+
+meta_block <- function(description = NULL, date = NULL) {
+  meta <- "
+  <style>
+  p.note {
+  font-family: Monaco, monospace;
+  font-size: 11px;
+  color: #999;
+  text-align: left;
+  line-height: 1.3;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  }
+  </style>
+  "
+  if (is.null(date)) {
+    date <- Sys.Date()
+  }
+  date <- paste0("<p class=\"note\">", date, "</p>")
+  if (is.null(description)) {
+    meta <- paste0(meta, "\n", date)
+  } else {
+    description <- paste0("<p class=\"note\">", description, "</p>")
+    meta <- paste0(meta, "\n", description, "\n", date, "\n")
+  }
+  meta
+}
+
 
 add_css <- function() {
   bg <- system.file(file.path("data", "bg.png"), package = "prettysimplemd")
@@ -148,11 +184,21 @@ add_footer <- function() {
 #' Renders simple_markdown
 #' 
 #' @param input Name of file
-#' @param open Logical indicating whether to open html output in browser
+#' @param description Optional, short hand description of document contents.
+#' @param date Date to be timestamped on top left of document. Defaults to 
+#'   current year-month-day.
+#' @param open Logical indicating whether to open output in browser. Defaults to
+#'   open the first time the function is called in a session.
 #' @param ... Passed to \code{\link{prettysimplemd}}
 #' @return Output saved as html file.
 #' @export
-renderPSM <- function(input, open = NULL, ...) {
-  prettysimplemd(file = input, open = open, ...)
+renderPSM <- function(input, description = NULL, date = NULL, open = NULL, ...) {
+  prettysimplemd(
+    file = input, 
+    description = description, 
+    date = date, 
+    open = open, 
+    ...
+  )
 }
 
