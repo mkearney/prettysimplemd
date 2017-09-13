@@ -5,7 +5,7 @@
 #' @param file Name of markdown file.
 #' @param open Logical indicating whether to open output in browser. Defaults to open the
 #'   first time the function is called in a session.
-#' @param dots Passed to rmarkdown::render.
+#' @param ... Passed to rmarkdown::render.
 #' @return Converts markdown file as pretty simple html file of same root name.
 #' @export
 prettysimplemd <- function(file, open = NULL, ...) {
@@ -15,19 +15,38 @@ prettysimplemd <- function(file, open = NULL, ...) {
   close(con)
   md[length(md) + 1] <- add_footer()
   md[length(md) + 1] <- add_css()
-  tmp <- tempfile(fileext = ".md")
+  if (grepl("\\.md$", file)) {
+    ext <- ".md"
+  } else {
+    ext <- ".Rmd"
+  }
+  tmp <- tempfile(fileext = ext)
   cat(paste(md, collapse = "\n"), file = tmp, fill = TRUE)
-  outfile <- gsub("\\.md", ".html", file)
-  rmarkdown::render(tmp, output_format = "html_document",
-                    output_file = basename(outfile), output_dir = dirname(outfile), ...)
+  outfile <- gsub(paste0(ext, "$"), ".html", file)
+  rmarkdown::render(
+    tmp, 
+    output_format = "html_document",
+    output_file = basename(outfile), 
+    output_dir = dirname(outfile), 
+    ...
+  )
   if (is.null(open)) {
-    if (any(
-      is.null(getOption("prettysimplemd.open")),
-      isTRUE(getOption("prettysimplemd.open"))
-    )) {
-      browseURL(outfile)
-      options(prettysimplemd.open = FALSE)
+    actives <- ls(
+      envir = .GlobalEnv, 
+      pattern = "^\\.active", 
+      all.names = TRUE
+    )
+    dot_obj <- paste0(
+      ".active_", 
+      gsub("\\s{1,}|-", "", basename(file))
+    )
+    if (dot_obj %in% actives) {
+      return(invisible())
     }
+    ## save .active_file in Global environment
+    assign(dot_obj, dot_obj, envir = .GlobalEnv)
+    ## open file
+    browseURL(outfile)
   } else if (open) {
     browseURL(outfile)
   }
@@ -46,9 +65,8 @@ add_css <- function() {
     html {
     background: rgba(0,15,60,.125);
     background-image: url(\"", bg, "\");
-    opacity: .9;
     padding: 60px 0;
-    color: #222;
+    color: #24292e;
     }
     body {
     background-image: url(\"", logo, "\");
@@ -57,19 +75,19 @@ add_css <- function() {
     background-repeat: no-repeat;
     background-position: right top;
     border-radius: 10px;
-    max-width: 1000px;
+    max-width: 940px;
     min-width: 400px;
     width: 90%;
     margin: 2px auto;
     line-height: 1.8;
-    font-family: 'Avenir Next', sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
     font-weight: 400;
     padding: 20px 10px;
     background-color: #fff;
     font-size: 18px;
     }
     div.container-fluid.main-container {
-    max-width: 860px;
+    max-width: 800px;
     }
     p {
     padding: 2px 0;
@@ -77,9 +95,8 @@ add_css <- function() {
     text-align: justify;
     line-height: 1.6;
     }
-    strong { font-family: 'Georgia', sans-serif; font-weight: 700; }
-    h1, h2, h3, h4 { font-family: 'Avenir Next', sans-serif; font-weight: 700; }
-    h2, h3, h4 { color: #111; }
+    strong { font-family: 'Helvetica Neue', Helvetica, sans-serif; font-weight: 700; }
+    h1, h2, h3, h4 { font-family: 'Helvetica Neue', Helvetica, sans-serif; font-weight: 700; }
     h1 {
     padding-top: 50px;
     font-size: 50px;
@@ -124,4 +141,26 @@ add_footer <- function() {
   "
 <p class=\"footer\">Michael W. Kearney &copy; 2017</p>
 "
+}
+
+#' renderPSM
+#' 
+#' Renders simple_markdown
+#' 
+#' @param input Name of file
+#' @param open Logical indicating whether to open html output in browser
+#' @param ... Passed to \code{\link{prettysimplemd}}
+#' @return Output saved as html file.
+#' @export
+renderPSM <- function(input, open = NULL, ...) {
+  prettysimplemd(file = input, open = open, ...)
+}
+
+#' psm_document
+#' 
+#' @param ... Passed to rmarkdown::html_document
+#'
+#' @export
+psm_document <- function(...) {
+  renderPSM(...)
 }

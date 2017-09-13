@@ -12,7 +12,7 @@ prettysimplemd(file, open = NULL, ...)
 \item{open}{Logical indicating whether to open output in browser. Defaults to open the
 first time the function is called in a session.}
 
-\item{dots}{Passed to rmarkdown::render.}
+\item{...}{Passed to rmarkdown::render.}
 }
 \value{
 Converts markdown file as pretty simple html file of same root name.
