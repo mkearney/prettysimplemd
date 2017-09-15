@@ -59,28 +59,11 @@ prettysimplemd <- function(file, description = NULL, date = NULL, open = NULL, .
 }
 
 meta_block <- function(description = NULL, date = NULL) {
-  meta <- "
-  <style>
-  p.note {
-  font-family: Monaco, monospace;
-  font-size: 11px;
-  color: #999;
-  text-align: left;
-  line-height: 1.3;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  }
-  </style>
-  "
   if (is.null(date)) {
     date <- Sys.Date()
   }
-  date <- paste0("<p class=\"note\">", date, "</p>")
-  if (is.null(description)) {
-    meta <- paste0(meta, "\n", date)
-  } else {
+  meta <- paste0("<p class=\"note\">", date, "</p>")
+  if (!is.null(description)) {
     description <- paste0("<p class=\"note\">", description, "</p>")
     meta <- paste0(meta, "\n", description, "\n", date, "\n")
   }
@@ -88,86 +71,93 @@ meta_block <- function(description = NULL, date = NULL) {
 }
 
 
+
 add_css <- function() {
-  bg <- system.file(file.path("data", "bg.png"), package = "prettysimplemd")
-  logo <- system.file(
-    file.path("data", 
-              "MU_UnitSig_MissouriSchoolofJournalism_rgb_std_horiz.png"), 
-    package = "prettysimplemd"
+  logo1 <- Sys.getenv("INSTITUTION_LOGO1")
+  logo2 <- Sys.getenv("INSTITUTION_LOGO2")
+  logos <- paste0(
+    "background-image: url(\"", 
+    logo1, "\"), ",
+    "url(\"", logo2, "\");"
   )
   paste0(
     "
 <style>
     html {
-    background: rgba(0,15,60,.125);
-    background-image: url(\"", bg, "\");
-    padding: 60px 0;
-    color: #24292e;
+      color: #24292e;
     }
     body {
-    background-image: url(\"", logo, "\");
-    border: 1px solid rgba(0,5,20,.35);
-    background-size: 350px auto;
-    background-repeat: no-repeat;
-    background-position: right top;
-    border-radius: 10px;
-    max-width: 940px;
-    min-width: 400px;
-    width: 90%;
-    margin: 2px auto;
-    line-height: 1.8;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
-    font-weight: 400;
-    padding: 20px 10px;
-    background-color: #fff;
-    font-size: 18px;
+      max-width: 940px;
+      min-width: 400px;
+      width: 90%;
+      margin: 2px auto;
+      line-height: 1.8;
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+      font-weight: 400;
+      padding: 20px 10px;
+      background-color: #fff;
+      font-size: 18px;
     }
-    div.container-fluid.main-container {
-    max-width: 800px;
+    div.container-fluid.main-container { 
+      max-width: 800px;
+      ", logos, "
+      background-size: auto 60px, auto 60px;
+      background-repeat: no-repeat, no-repeat;
+      background-position: bottom left, bottom right;
     }
     p {
-    padding: 2px 0;
-    font-size: 18px;
-    text-align: justify;
-    line-height: 1.6;
+      padding: 2px 0;
+      font-size: 18px;
+      text-align: justify;
+      line-height: 1.6;
     }
     strong { font-family: 'Helvetica Neue', Helvetica, sans-serif; font-weight: 700; }
     h1, h2, h3, h4 { font-family: 'Helvetica Neue', Helvetica, sans-serif; font-weight: 700; }
     h1 {
-    padding-top: 50px;
-    font-size: 50px;
-    text-align: center;
-    color: #f1b82d;
-    -webkit-text-stroke: 1px black;
+      padding-top: 50px;
+      font-size: 50px;
+      text-align: center;
+      color: #f1b82d;
+      -webkit-text-stroke: 1px black;
     }
     h2 { font-size: 22px; }
     h3 { font-size: 20px; }
     h4 { font-size: 18px; }
     p.footer {
-    padding-top:80px;
-    padding-bottom: 30px;
-    color: #666;
-    font-size: 14px;
-    text-align: center; }
-    s,
-    strike {
-    text-decoration: none;
-    position: relative;
-    display: inline-block;
+      padding-top:80px;
+      padding-bottom: 30px;
+      color: #666;
+      font-size: 14px;
+      text-align: center; 
     }
-    s:after,
-    strike:after {
-    content: \"\";
-    position: absolute;
-    bottom: 0;
-    left: -2%;
-    border-radius:0 10px 10px 0;
-    border-top: 2px solid rgba(204, 0, 0, .75);
-    border-top-right-radius: 1px;
-    border-top-left-radius: 1px;
-    width: 104%;
-    height: 53%;
+    s, strike {
+      text-decoration: none;
+      position: relative;
+      display: inline-block;
     }
+    s:after, strike:after {
+      content: \"\";
+      position: absolute;
+      bottom: 0;
+      left: -2%;
+      border-radius:0 10px 10px 0;
+      border-top: 2px solid rgba(204, 0, 0, .75);
+      border-top-right-radius: 1px;
+      border-top-left-radius: 1px;
+      width: 104%;
+      height: 53%;
+    }
+    p.note {
+      font-family: Monaco, monospace;
+      font-size: 11px;
+      color: #999;
+      text-align: left;
+      line-height: 1.3;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+  }
     </style>
     "
   )
@@ -176,6 +166,8 @@ add_css <- function() {
 add_footer <- function() {
   "
 <p class=\"footer\">Michael W. Kearney &copy; 2017</p>
+<br>
+<br>
 "
 }
 
