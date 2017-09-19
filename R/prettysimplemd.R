@@ -11,7 +11,11 @@
 #' @param ... Passed to rmarkdown::render.
 #' @return Converts markdown file as pretty simple html file of same root name.
 #' @export
-prettysimplemd <- function(file, description = NULL, date = NULL, open = NULL, ...) {
+prettysimplemd <- function(file, 
+                           description = NULL, 
+                           date = NULL,
+                           open = NULL, 
+                           ...) {
   file <- path.expand(file)
   con <- file(file)
   md <- readLines(con, warn = FALSE)
@@ -71,17 +75,34 @@ meta_block <- function(description = NULL, date = NULL) {
   meta
 }
 
-
-
 add_css <- function() {
   logo1 <- Sys.getenv("INSTITUTION_LOGO1")
   logo2 <- Sys.getenv("INSTITUTION_LOGO2")
-  logos <- paste0(
-    "background-image: url(\"", 
-    logo1, "\"), ",
-    "url(\"", 
-    logo2, "\");"
-  )
+  if (logo1 != "" && logo2 != "") {
+    logos <- paste0(
+      "      background-image: url(\"", logo1, "\"), ",
+      "url(\"", logo2, "\");
+      background-size: auto 60px, auto 60px;
+      background-repeat: no-repeat, no-repeat;
+      background-position: top left, top right;"
+    )
+  } else if (logo1 != "") {
+    logos <- paste0(
+      "      background-image: url(\"", logo1, "\");
+      background-size: auto 60px;
+      background-repeat: no-repeat;
+      background-position: top right;"
+    )
+  } else if (logo2 != "") {
+    logos <- paste0(
+      "      background-image: url(\"", logo2, "\");
+      background-size: auto 60px;
+      background-repeat: no-repeat;
+      background-position: top left;"
+    )
+  } else {
+    logos <- ""
+  }
   paste0(
     "
 <style>
@@ -103,9 +124,6 @@ add_css <- function() {
     div.container-fluid.main-container { 
       max-width: 800px;
       ", logos, "
-      background-size: auto 60px, auto 60px;
-      background-repeat: no-repeat, no-repeat;
-      background-position: top left, top right;
     }
     p {
       padding: 2px 0;
@@ -182,7 +200,11 @@ add_footer <- function() {
 #' @param ... Passed to \code{\link{prettysimplemd}}
 #' @return Output saved as html file.
 #' @export
-renderPSM <- function(input, description = NULL, date = NULL, open = NULL, ...) {
+renderPSM <- function(input, 
+                      description = NULL, 
+                      date = NULL, 
+                      open = NULL, 
+                      ...) {
   prettysimplemd(
     file = input, 
     description = description, 
