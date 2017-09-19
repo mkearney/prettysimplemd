@@ -20,8 +20,12 @@ prettysimplemd <- function(file,
   con <- file(file)
   md <- readLines(con, warn = FALSE)
   close(con)
-  md[length(md) + 1] <- add_footer()
-  md[length(md) + 1] <- add_css()
+  md <- c(
+    "<div class=\"bg-container\">", 
+    add_css(), 
+    md,
+    "</div>",
+    add_footer())
   if (grepl("\\.md$", file)) {
     ext <- ".md"
   } else {
@@ -80,25 +84,31 @@ add_css <- function() {
   logo2 <- Sys.getenv("INSTITUTION_LOGO2")
   if (logo1 != "" && logo2 != "") {
     logos <- paste0(
-      "      background-image: url(\"", logo1, "\"), ",
+      "    div.container-fluid.main-container {
+      max-width: 1000px;
+      background-image: url(\"", logo1, "\"), ",
       "url(\"", logo2, "\");
       background-size: auto 60px, auto 60px;
       background-repeat: no-repeat, no-repeat;
-      background-position: top left, top right;"
+      background-position: top left, top right;\n}"
     )
   } else if (logo1 != "") {
     logos <- paste0(
-      "      background-image: url(\"", logo1, "\");
+      "    div.container-fluid.main-container {
+      max-width: 1000px;
+      background-image: url(\"", logo1, "\");
       background-size: auto 60px;
       background-repeat: no-repeat;
-      background-position: top right;"
+      background-position: top right;\n}"
     )
   } else if (logo2 != "") {
     logos <- paste0(
-      "      background-image: url(\"", logo2, "\");
+      "    div.container-fluid.main-container {
+      max-width: 1000px;
+      background-image: url(\"", logo2, "\");
       background-size: auto 60px;
       background-repeat: no-repeat;
-      background-position: top left;"
+      background-position: top left;\n}"
     )
   } else {
     logos <- ""
@@ -110,7 +120,6 @@ add_css <- function() {
       color: #24292e;
     }
     body {
-      max-width: 940px;
       min-width: 400px;
       width: 90%;
       margin: 2px auto;
@@ -121,10 +130,10 @@ add_css <- function() {
       background-color: #fff;
       font-size: 18px;
     }
-    div.container-fluid.main-container { 
-      max-width: 800px;
-      ", logos, "
-    }
+    div.bg-container { 
+      margin: 0 auto;
+      max-width: 860px;
+    }\n", logos, "
     p {
       padding: 2px 0;
       font-size: 18px;
@@ -133,7 +142,7 @@ add_css <- function() {
     }
     strong { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; }
     h1, h2, h3, h4 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; }
-    h1 {
+    h1, h1.title {
       padding-top: 40px;
       font-size: 50px;
       text-align: center;
