@@ -25,7 +25,8 @@ prettysimplemd <- function(file, description = NULL, date = NULL, open = NULL, .
   }
   tmp <- tempfile(fileext = ext)
   md <- c(
-    meta_block(description = description, date = date), md
+    meta_block(description = description, date = date), 
+    md
   )
   cat(paste(md, collapse = "\n"), file = tmp, fill = TRUE)
   outfile <- gsub(paste0(ext, "$"), ".html", file)
@@ -60,12 +61,12 @@ prettysimplemd <- function(file, description = NULL, date = NULL, open = NULL, .
 
 meta_block <- function(description = NULL, date = NULL) {
   if (is.null(date)) {
-    date <- Sys.Date()
+    date <- Sys.time()
   }
   meta <- paste0("<p class=\"note\">", date, "</p>")
   if (!is.null(description)) {
     description <- paste0("<p class=\"note\">", description, "</p>")
-    meta <- paste0(meta, "\n", description, "\n", date, "\n")
+    meta <- paste0(meta, "\n", description, "\n")
   }
   meta
 }
@@ -78,7 +79,8 @@ add_css <- function() {
   logos <- paste0(
     "background-image: url(\"", 
     logo1, "\"), ",
-    "url(\"", logo2, "\");"
+    "url(\"", 
+    logo2, "\");"
   )
   paste0(
     "
@@ -94,7 +96,7 @@ add_css <- function() {
       line-height: 1.8;
       font-family: 'Helvetica Neue', Helvetica, sans-serif;
       font-weight: 400;
-      padding: 20px 10px;
+      padding: 40px 10px;
       background-color: #fff;
       font-size: 18px;
     }
@@ -103,7 +105,7 @@ add_css <- function() {
       ", logos, "
       background-size: auto 60px, auto 60px;
       background-repeat: no-repeat, no-repeat;
-      background-position: bottom left, bottom right;
+      background-position: top left, top right;
     }
     p {
       padding: 2px 0;
@@ -111,10 +113,10 @@ add_css <- function() {
       text-align: justify;
       line-height: 1.6;
     }
-    strong { font-family: 'Helvetica Neue', Helvetica, sans-serif; font-weight: 700; }
-    h1, h2, h3, h4 { font-family: 'Helvetica Neue', Helvetica, sans-serif; font-weight: 700; }
+    strong { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; }
+    h1, h2, h3, h4 { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; }
     h1 {
-      padding-top: 50px;
+      padding-top: 40px;
       font-size: 50px;
       text-align: center;
       color: #f1b82d;
@@ -124,8 +126,6 @@ add_css <- function() {
     h3 { font-size: 20px; }
     h4 { font-size: 18px; }
     p.footer {
-      padding-top:80px;
-      padding-bottom: 30px;
       color: #666;
       font-size: 14px;
       text-align: center; 
@@ -153,7 +153,7 @@ add_css <- function() {
       color: #999;
       text-align: left;
       line-height: 1.3;
-      padding-top: 0;
+      padding-top: 55px;
       padding-bottom: 0;
       margin-top: 0;
       margin-bottom: 0;
@@ -165,9 +165,7 @@ add_css <- function() {
 
 add_footer <- function() {
   "
-<p class=\"footer\">Michael W. Kearney &copy; 2017</p>
-<br>
-<br>
+<!-- <p class=\"footer\">Michael W. Kearney &copy; 2017</p> -->
 "
 }
 
