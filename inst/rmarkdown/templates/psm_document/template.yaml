@@ -1,0 +1,4 @@
+name: psm_document (HTML)
+description: >
+  Template for prettysimplemd documents.
+create_dir: false
