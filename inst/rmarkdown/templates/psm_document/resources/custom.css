@@ -19,10 +19,7 @@ div.bg-container {
 }
 div.container-fluid.main-container {
   max-width: 1000px;
-  background-image: url("/Users/mwk/Dropbox/Mizzou-identity/JOURN/screen/MU_UnitSig_MissouriSchoolofJournalism_rgb_std_horiz.png"), url("/Users/mwk/Dropbox/Mizzou-identity/DSA/screen/MU_UnitSig_DataScienceandAnalytics_rgb_std_horiz.png");
-  background-size: auto 60px, auto 60px;
-  background-repeat: no-repeat, no-repeat;
-  background-position: top left, top right;
+  LOGOS
 }
 p {
   padding: 2px 0;
@@ -46,20 +43,20 @@ strong {
   margin-top: 40px;
   margin-bottom: 10px;
 }
-  h2 { font-size: 22px; }
-  h3 { font-size: 20px; }
-  h4 { font-size: 18px; }
-  p.footer {
+h2 { font-size: 22px; }
+h3 { font-size: 20px; }
+h4 { font-size: 18px; }
+p.footer {
   color: #666;
   font-size: 14px;
   text-align: center; 
 }
-  s, strike {
+s, strike {
   text-decoration: none;
   position: relative;
   display: inline-block;
 }
-  s:after, strike:after {
+s:after, strike:after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -71,7 +68,7 @@ strong {
   width: 104%;
   height: 53%;
 }
-p.note {
+p.note, h4.date, em {
   font-family: Monaco, monospace;
   font-size: 11px;
   color: #999;

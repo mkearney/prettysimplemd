@@ -79,12 +79,12 @@ meta_block <- function(description = NULL, date = NULL) {
   meta
 }
 
-add_css <- function() {
+add_logos <- function() {
   logo1 <- Sys.getenv("INSTITUTION_LOGO1")
   logo2 <- Sys.getenv("INSTITUTION_LOGO2")
   if (logo1 != "" && logo2 != "") {
-    logos <- paste0(
-      "    div.container-fluid.main-container {
+    logos <- paste0("
+      div.container-fluid.main-container {
       max-width: 1000px;
       background-image: url(\"", logo1, "\"), ",
       "url(\"", logo2, "\");
@@ -92,14 +92,14 @@ add_css <- function() {
       background-repeat: no-repeat, no-repeat;
       background-position: top left, top right;\n}"
     )
-  } else if (logo1 != "") {
-    logos <- paste0(
-      "    div.container-fluid.main-container {
-      max-width: 1000px;
-      background-image: url(\"", logo1, "\");
-      background-size: auto 60px;
-      background-repeat: no-repeat;
-      background-position: top right;\n}"
+} else if (logo1 != "") {
+  logos <- paste0(
+    "    div.container-fluid.main-container {
+    max-width: 1000px;
+    background-image: url(\"", logo1, "\");
+    background-size: auto 60px;
+    background-repeat: no-repeat;
+    background-position: top right;\n}"
     )
   } else if (logo2 != "") {
     logos <- paste0(
@@ -113,9 +113,12 @@ add_css <- function() {
   } else {
     logos <- ""
   }
-  paste0(
-    "
-<style>
+  logos
+}
+
+add_css <- function(style = TRUE) {
+  logos <- add_logos()
+  css <- paste0("    
     html {
       color: #24292e;
     }
@@ -133,7 +136,7 @@ add_css <- function() {
     div.bg-container { 
       margin: 0 auto;
       max-width: 860px;
-    }\n", logos, "
+    }", logos, "
     p {
       padding: 2px 0;
       font-size: 18px;
@@ -184,15 +187,16 @@ add_css <- function() {
       padding-bottom: 0;
       margin-top: 0;
       margin-bottom: 0;
-  }
-    </style>
-    "
-  )
+  }")
+    if (style) {
+      css <- paste0("<style>\n", css, "\n</style>")
+    }
+    css
 }
 
 add_footer <- function() {
   "
-<!-- <p class=\"footer\">Michael W. Kearney &copy; 2017</p> -->
+<!-- <p class=\"footer\">&copy; 2017</p> -->
 "
 }
 
